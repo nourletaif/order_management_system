@@ -29,7 +29,7 @@ public class MainController {
     private EmailService emailService;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public User register(@RequestBody Usaer user) {
         return userService.registerUser(user.getEmail(), user.getPassword());
     }
 

@@ -30,4 +30,20 @@ public class CartService {
         cart.getItems().add(item);
         cartRepository.save(cart);
     }
+    @Test
+    void testAddItemToCart() {
+        Cart cart = cartService.getCartByUserId(1L);
+        CartItem item = new CartItem("Product1", 1, 19.99);
+        cartService.addItemToCart(cart, item);
+        assertTrue(cart.getItems().contains(item));
+    }
+    @Test
+    void testRemoveItemFromCart() {
+        Cart cart = cartService.getCartByUserId(1L);
+        CartItem item = new CartItem("Product1", 1, 19.99);
+        cartService.addItemToCart(cart, item);
+        cartService.removeItemFromCart(cart, item);
+        assertFalse(cart.getItems().contains(item));
+    }
+
 }
