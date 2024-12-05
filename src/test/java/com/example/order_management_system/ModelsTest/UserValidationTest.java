@@ -44,4 +44,21 @@ public class UserValidationTests {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertFalse(violations.isEmpty(), "Password should not be null");
     }
+    @Test
+    public void testValidLogin() throws Exception {
+        mockMvc.perform(post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\": \"test@example.com\", \"password\": \"password123\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("test@example.com"));
+    }
+
+    @Test
+    public void testInvalidLogin() throws Exception {
+        mockMvc.perform(post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\": \"wrong@example.com\", \"password\": \"wrongpassword\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
 }

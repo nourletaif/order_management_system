@@ -32,4 +32,22 @@ public class CartItemTests {
         assertEquals(item1, item2);
         assertEquals(item1.hashCode(), item2.hashCode());
     }
+    @Test
+    public void testAddItemToCart() throws Exception {
+        mockMvc.perform(post("/api/cart/1/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"productName\": \"Product 1\", \"quantity\": 1, \"price\": 19.99}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items[0].productName").value("Product 1"));
+    }
+
+    @Test
+    public void testRemoveItemFromCart() throws Exception {
+        mockMvc.perform(post("/api/cart/1/remove")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": \"1\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.items").isEmpty());
+    }
+
 }

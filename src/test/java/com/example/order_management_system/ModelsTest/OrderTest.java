@@ -45,4 +45,23 @@ public class OrderTests {
         assertEquals(order1, order2);
         assertEquals(order1.hashCode(), order2.hashCode());
     }
+    @Test
+    public void testCreateOrder() throws Exception {
+        mockMvc.perform(post("/api/orders")
+                        .param("userId", "1")
+                        .param("status", "pending")
+                        .param("deliveryAddress", "123 Test Street")
+                        .param("paymentInfo", "Credit Card"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("pending"));
+    }
+
+    @Test
+    public void testCreateOrderIncomplete() throws Exception {
+        mockMvc.perform(post("/api/orders")
+                        .param("userId", "1")
+                        .param("status", "pending"))
+                .andExpect(status().isBadRequest());
+    }
+
 }
